@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Article from './components/Article.vue'
-import Page from './components/Page.vue'
 
 // Vue Routerを有効化
 Vue.use(Router)
@@ -26,15 +25,7 @@ export default new Router({
       path: '/article/:aid',
       name: 'article',
       component: Article,
-      props: true,
-      children: [
-        {
-          path: 'pages/:page_num',
-          name: 'page',
-          component: Page,
-          props: true,
-        }
-      ]
+      props: true
     }
   ]
 })
