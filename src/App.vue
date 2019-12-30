@@ -2,18 +2,9 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/article/10">記事：No.10</router-link> |
-      <router-link to="/article/108">記事：No.108</router-link> |
-      <router-link to="/hoge">Hoge</router-link> |
-      <router-link to="/hoge#sa">Hoge（サ行）</router-link>
+      <router-link to="/about">About</router-link>
     </div>
     <router-view/>
-    <!--
-    <transition>
-      <router-view/>
-    </transition>
-    -->
   </div>
 </template>
 
@@ -36,13 +27,5 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
-}
-
-.v-enter-active, .v-leave-active {
-  transition: opacity 5s;
-}
-
-.v-enter, .v-leave-to {
-  opacity: 0.0;
 }
 </style>

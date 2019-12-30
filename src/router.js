@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
-import Article from './components/Article.vue'
+import About from './views/About.vue'
+import Signin from './components/Signin.vue'
 
-// Vue Routerを有効化
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -15,31 +15,35 @@ export default new Router({
       name: 'home',
       component: Home
     },
+    // ログインページへのルート
+    {
+      path: '/signin',
+      name: 'signin',
+      component: Signin
+    },
+    // 認証を要求するルート
     {
       path: '/about',
       name: 'about',
-      // コンポーネントの非同期ロード
-      component: () => import('./views/About.vue')
-    },
-    {
-      path: '/article/:aid',
-      name: 'article',
-      component: Article,
-      props: true
-    }
-  ],
-  scrollBehavior(to, from, savedPosition) {
-    // 戻るボタンでの移動は以前の位置を保持
-    if (savedPosition) {
-      return savedPosition
-    } else {
-      if (to.hash) {
-        // ハッシュ（#）がある場合は、指定の要素位置へ
-        return { selector: to.hash }
-      } else {
-        // さもなくば先頭位置に移動
-        return { x: 0, y: 0 }
+      component: About,
+      meta: {
+        isRequestAuth: true
       }
     }
-  }  
+  ]
 })
+
+// authedフラグが立っていれば、認証済と見なす
+let isAuthed = function() { return !!sessionStorage['authed']; }
+
+router.beforeEach((to, from, next) => {
+  // 認証を要求しており、認証済みでない場合にログインページに移動
+  if (to.matched.some(route => route.meta.isRequestAuth) && !isAuthed()) {
+        next({ path: '/signin', query: { path: to.fullPath }})
+  } else {
+    // 認証済み、または認証を要求しないページはそのまま表示
+    next()
+  }
+});
+
+export default router
