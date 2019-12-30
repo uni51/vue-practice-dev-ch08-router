@@ -27,5 +27,19 @@ export default new Router({
       component: Article,
       props: true
     }
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    // 戻るボタンでの移動は以前の位置を保持
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      if (to.hash) {
+        // ハッシュ（#）がある場合は、指定の要素位置へ
+        return { selector: to.hash }
+      } else {
+        // さもなくば先頭位置に移動
+        return { x: 0, y: 0 }
+      }
+    }
+  }  
 })
